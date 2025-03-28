@@ -55,6 +55,11 @@ export default function LoginPage() {
       router.push("/admin")
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred during login")
+      toast({
+        title: "Error",
+        description: err instanceof Error ? err.message : "An error occurred during login",
+        variant: "destructive",
+      })
     } finally {
       setIsLoading(false)
     }
@@ -131,4 +136,3 @@ export default function LoginPage() {
     </div>
   )
 }
-

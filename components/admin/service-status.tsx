@@ -144,4 +144,3 @@ export function ServiceStatusPanel() {
     </Card>
   )
 }
-

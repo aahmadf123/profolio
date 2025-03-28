@@ -74,6 +74,10 @@ function MediaPageContent() {
       )
 
       setFiles(filesWithUrls)
+      toast({
+        title: "Success",
+        description: "Media files loaded successfully",
+      })
     } catch (error) {
       console.error("Error fetching media files:", error)
       toast({
@@ -419,4 +423,3 @@ function MediaWrapper() {
 export default function MediaPage() {
   return <MediaWrapper />
 }
-

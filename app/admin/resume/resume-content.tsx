@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { useToast } from "@/components/ui/use-toast"
+import { supabase, generateUniqueFilename, STORAGE_BUCKETS } from "@/lib/supabase-client"
 
 export default function ResumeContent() {
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
@@ -72,29 +73,25 @@ export default function ResumeContent() {
     setIsUploading(true)
 
     try {
-      // In a real app with Supabase, you would do:
-      // const fileName = generateUniqueFilename(selectedFile);
-      // const { data, error } = await supabase.storage
-      //   .from(STORAGE_BUCKETS.MEDIA)
-      //   .upload(`resumes/${fileName}`, selectedFile);
+      const fileName = generateUniqueFilename(selectedFile)
+      const { data, error } = await supabase.storage
+        .from(STORAGE_BUCKETS.RESUMES)
+        .upload(`resumes/${fileName}`, selectedFile)
 
-      // if (error) throw error;
+      if (error) throw error
 
-      // const { data: { publicUrl } } = supabase.storage
-      //   .from(STORAGE_BUCKETS.MEDIA)
-      //   .getPublicUrl(`resumes/${fileName}`);
-
-      // For this demo, we'll use a local URL
-      const fileUrl = URL.createObjectURL(selectedFile)
+      const { data: { publicUrl } } = supabase.storage
+        .from(STORAGE_BUCKETS.RESUMES)
+        .getPublicUrl(`resumes/${fileName}`)
 
       // Store in localStorage for demo purposes
-      localStorage.setItem("resumeUrl", fileUrl)
+      localStorage.setItem("resumeUrl", publicUrl)
       localStorage.setItem("resumeName", selectedFile.name)
       localStorage.setItem("resumeDate", new Date().toISOString())
 
       // Update the current resume state
       setCurrentResume({
-        url: fileUrl,
+        url: publicUrl,
         fileName: selectedFile.name,
         uploadedAt: new Date().toISOString(),
       })
@@ -122,8 +119,12 @@ export default function ResumeContent() {
 
   const handleDelete = async () => {
     try {
-      // In a real app with Supabase, you would delete from storage
-      // For this demo, we'll just clear localStorage
+      const { error } = await supabase.storage
+        .from(STORAGE_BUCKETS.RESUMES)
+        .remove([`resumes/${currentResume.fileName}`])
+
+      if (error) throw error
+
       localStorage.removeItem("resumeUrl")
       localStorage.removeItem("resumeName")
       localStorage.removeItem("resumeDate")
@@ -296,4 +297,3 @@ export default function ResumeContent() {
     </div>
   )
 }
-

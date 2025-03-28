@@ -1,5 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server"
 import type { LogLevel } from "@/lib/logging-service"
+import { createLogEntry } from "@/lib/storage/log-storage"
 
 export async function POST(request: NextRequest) {
   try {
@@ -14,11 +15,8 @@ export async function POST(request: NextRequest) {
     console.log(`[API LOG] [${level.toUpperCase()}] ${message}`, { source, user_email, details })
 
     try {
-      // Import dynamically to avoid issues with server components
-      const logStorage = await import("@/lib/storage/log-storage")
-
       // Log the entry - this will use Redis if available or memory if not
-      const logEntry = await logStorage.createLogEntry(
+      const logEntry = await createLogEntry(
         level as LogLevel,
         message,
         source,
@@ -47,4 +45,3 @@ export async function POST(request: NextRequest) {
     })
   }
 }
-

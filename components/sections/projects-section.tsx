@@ -562,4 +562,3 @@ function ProjectCard({ project, variants, onClick, onPreviewClick }: ProjectCard
     </motion.div>
   )
 }
-
