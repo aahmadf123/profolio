@@ -1,9 +1,9 @@
-"use client"
+'use client'
 
-import { Suspense, useEffect } from "react"
-import { usePathname, useSearchParams } from "next/navigation"
-import { useAuthContext } from "@/components/auth-provider"
-import { logInfo } from "@/lib/logging-service"
+import { Suspense, useEffect } from 'react'
+import { usePathname, useSearchParams } from 'next/navigation'
+import { useAuthContext } from '@/components/auth-provider'
+import { logInfo } from '@/lib/logging-service'
 
 function AuthAwareLoggerContent() {
   const pathname = usePathname()
@@ -12,15 +12,15 @@ function AuthAwareLoggerContent() {
 
   // Log authentication events
   useEffect(() => {
-    if (typeof window === "undefined") return
+    if (typeof window === 'undefined') return
     if (!userEmail) return
 
     // We'll log when authentication state changes
     const logAuthChange = async () => {
       try {
-        await logInfo(isAuthenticated ? "User authenticated" : "User logged out", "auth", userEmail)
+        await logInfo(isAuthenticated ? 'User authenticated' : 'User logged out', 'auth', userEmail)
       } catch (error) {
-        console.error("Failed to log auth change:", error)
+        console.error('Failed to log auth change:', error)
       }
     }
 
@@ -37,4 +37,3 @@ export function AuthAwareLogger() {
     </Suspense>
   )
 }
-

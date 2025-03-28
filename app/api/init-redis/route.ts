@@ -21,6 +21,10 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ success: true, message: "Redis database initialized successfully" })
   } catch (error) {
     console.error("Error initializing Redis:", error)
-    return NextResponse.json({ success: false, error: "Internal server error" }, { status: 500 })
+    let errorMessage = "Internal server error"
+    if (error instanceof Error) {
+      errorMessage = error.message
+    }
+    return NextResponse.json({ success: false, error: errorMessage }, { status: 500 })
   }
 }

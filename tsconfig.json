@@ -23,5 +23,17 @@
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
+  "eslintConfig": {
+    "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
+    "parser": "@typescript-eslint/parser",
+    "plugins": ["@typescript-eslint"],
+    "rules": {
+      "quotes": ["error", "single"],
+      "semi": ["error", "always"],
+      "indent": ["error", 2],
+      "no-unused-vars": ["warn"],
+      "no-console": ["warn"]
+    }
+  }
 }

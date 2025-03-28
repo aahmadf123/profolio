@@ -37,11 +37,14 @@ export async function POST(request: NextRequest) {
       })
     }
   } catch (error) {
-    // Return success anyway to prevent app from breaking
+    console.error("Error processing log request:", error)
+    let errorMessage = "Internal server error"
+    if (error instanceof Error) {
+      errorMessage = error.message
+    }
     return NextResponse.json({
-      success: true,
-      fallback: true,
-      error: error instanceof Error ? error.message : String(error),
-    })
+      success: false,
+      error: errorMessage,
+    }, { status: 500 })
   }
 }

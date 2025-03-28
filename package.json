@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "format": "prettier --write ."
   },
   "dependencies": {
     "@emotion/is-prop-valid": "latest",
@@ -67,6 +68,8 @@
     "@types/node": "^22.13.14",
     "@types/react": "18.3.20",
     "@types/react-dom": "18.3.5",
+    "eslint": "^8.32.0",
+    "prettier": "^2.8.4",
     "lucide-react": "^0.484.0",
     "postcss": "^8",
     "source-map-loader": "5.0.0",

@@ -27,6 +27,14 @@ export default function LoginPage() {
     setError(null)
 
     try {
+      // Validate and sanitize email and password
+      const sanitizedEmail = email.trim().toLowerCase()
+      const sanitizedPassword = password.trim()
+
+      if (!sanitizedEmail || !sanitizedPassword) {
+        throw new Error("Email and password are required.")
+      }
+
       // This is a placeholder for actual authentication logic
       // In a real app, you would use NextAuth.js or a similar solution
 
@@ -36,14 +44,14 @@ export default function LoginPage() {
       // For demo purposes, check if email is in allowed list
       const allowedEmails = process.env.NEXT_PUBLIC_ALLOWED_EMAILS?.split(",") || []
 
-      if (allowedEmails.length > 0 && !allowedEmails.includes(email)) {
+      if (allowedEmails.length > 0 && !allowedEmails.includes(sanitizedEmail)) {
         throw new Error("Access denied. You are not authorized to log in.")
       }
 
       // For demo purposes, simulate successful login
       // Store a simple auth token in localStorage
       localStorage.setItem("isAuthenticated", "true")
-      localStorage.setItem("userEmail", email)
+      localStorage.setItem("userEmail", sanitizedEmail)
 
       // Show success toast
       toast({

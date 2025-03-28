@@ -1,10 +1,10 @@
-"use client"
+'use client'
 
-import { createContext, useContext, useEffect, useState } from "react"
-import { logActivity } from "@/lib/logging-service"
-import type { ReactNode } from "react"
-import { useAuth } from "@/lib/use-auth"
-import { useRouter } from "next/navigation"
+import { createContext, useContext, useEffect, useState } from 'react'
+import { logActivity } from '@/lib/logging-service'
+import type { ReactNode } from 'react'
+import { useAuth } from '@/lib/use-auth'
+import { useRouter } from 'next/navigation'
 
 interface AuthContextType {
   isAuthenticated: boolean
@@ -30,17 +30,17 @@ export function AuthProvider({ children, requireAuth = false }: AuthProviderProp
   useEffect(() => {
     // Check if user is authenticated
     const checkAuth = () => {
-      const storedAuth = localStorage.getItem("isAuthenticated")
-      const email = localStorage.getItem("userEmail")
+      const storedAuth = localStorage.getItem('isAuthenticated')
+      const email = localStorage.getItem('userEmail')
 
-      const isAuth = storedAuth === "true"
+      const isAuth = storedAuth === 'true'
       setIsAuthenticated(isAuth)
       setUserEmail(email)
 
       // Log authentication status
       if (isAuth && email) {
-        logActivity("info", "User session restored", "auth", email).catch((err) =>
-          console.error("Failed to log auth status:", err),
+        logActivity('info', 'User session restored', 'auth', email).catch((err) =>
+          console.error('Failed to log auth status:', err),
         )
       }
 
@@ -53,21 +53,21 @@ export function AuthProvider({ children, requireAuth = false }: AuthProviderProp
   const auth = useAuth(requireAuth)
 
   const login = async (email: string, password: string) => {
-    localStorage.setItem("isAuthenticated", "true")
-    localStorage.setItem("userEmail", email)
+    localStorage.setItem('isAuthenticated', 'true')
+    localStorage.setItem('userEmail', email)
     setIsAuthenticated(true)
     setUserEmail(email)
-    await logActivity("success", "User logged in", "auth", email)
+    await logActivity('success', 'User logged in', 'auth', email)
   }
 
   const logout = async () => {
-    const email = localStorage.getItem("userEmail")
-    localStorage.removeItem("isAuthenticated")
-    localStorage.removeItem("userEmail")
+    const email = localStorage.getItem('userEmail')
+    localStorage.removeItem('isAuthenticated')
+    localStorage.removeItem('userEmail')
     setIsAuthenticated(false)
     setUserEmail(null)
     if (email) {
-      await logActivity("info", "User logged out", "auth", email)
+      await logActivity('info', 'User logged out', 'auth', email)
     }
   }
 
@@ -85,7 +85,7 @@ export function AuthProvider({ children, requireAuth = false }: AuthProviderProp
 export function useAuthContext() {
   const context = useContext(AuthContext)
   if (context === undefined) {
-    throw new Error("useAuthContext must be used within an AuthProvider")
+    throw new Error('useAuthContext must be used within an AuthProvider')
   }
   return context
 }

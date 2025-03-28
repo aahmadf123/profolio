@@ -1,13 +1,13 @@
-"use client"
+'use client'
 
-import { Suspense, useRef } from "react"
-import { useSearchParams } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { useToast } from "@/components/ui/use-toast"
-import { ErrorBoundary } from "@/components/error-boundary"
-import { useBackups, type Backup } from "@/hooks/useBackups"
-import { Download, Upload, Trash2, RotateCcw } from "lucide-react"
+import { Suspense, useRef } from 'react'
+import { useSearchParams } from 'next/navigation'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { useToast } from '@/components/ui/use-toast'
+import { ErrorBoundary } from '@/components/error-boundary'
+import { useBackups, type Backup } from '@/hooks/useBackups'
+import { Download, Upload, Trash2, RotateCcw } from 'lucide-react'
 
 function BackupsContent() {
   const { toast } = useToast()
@@ -29,24 +29,88 @@ function BackupsContent() {
     try {
       await restoreBackup(file)
       toast({
-        title: "Backup restored",
-        description: "Your backup has been successfully restored.",
+        title: 'Backup restored',
+        description: 'Your backup has been successfully restored.',
       })
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Failed to restore backup. Please try again.",
-        variant: "destructive",
+        title: 'Error',
+        description: 'Failed to restore backup. Please try again.',
+        variant: 'destructive',
       })
     } finally {
       if (fileInputRef.current) {
-        fileInputRef.current.value = ""
+        fileInputRef.current.value = ''
       }
     }
   }
 
+  const handleCreateBackup = async () => {
+    try {
+      await createBackup()
+      toast({
+        title: 'Backup created',
+        description: 'Your backup has been successfully created.',
+      })
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'Failed to create backup. Please try again.',
+        variant: 'destructive',
+      })
+    }
+  }
+
+  const handleRestoreBackup = async (backup: Backup | File) => {
+    try {
+      await restoreBackup(backup)
+      toast({
+        title: 'Backup restored',
+        description: 'Your backup has been successfully restored.',
+      })
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'Failed to restore backup. Please try again.',
+        variant: 'destructive',
+      })
+    }
+  }
+
+  const handleDeleteBackup = async (backupId: string) => {
+    try {
+      await deleteBackup(backupId)
+      toast({
+        title: 'Backup deleted',
+        description: 'Your backup has been successfully deleted.',
+      })
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'Failed to delete backup. Please try again.',
+        variant: 'destructive',
+      })
+    }
+  }
+
+  const handleDownloadBackup = async (backup: Backup) => {
+    try {
+      await downloadBackup(backup)
+      toast({
+        title: 'Backup downloaded',
+        description: 'Your backup has been successfully downloaded.',
+      })
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'Failed to download backup. Please try again.',
+        variant: 'destructive',
+      })
+    }
+  }
+
   return (
-    <div className="container mx-auto py-8">
+    <div className='container mx-auto py-8'>
       <Card>
         <CardHeader>
           <CardTitle>Backup Management</CardTitle>
@@ -55,68 +119,68 @@ function BackupsContent() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="space-y-6">
-            <div className="flex gap-4">
+          <div className='space-y-6'>
+            <div className='flex gap-4'>
               <Button
-                onClick={() => createBackup()}
+                onClick={handleCreateBackup}
                 disabled={isExporting}
               >
-                <Download className="mr-2 h-4 w-4" />
+                <Download className='mr-2 h-4 w-4' />
                 Create Backup
               </Button>
               <Button
-                variant="outline"
+                variant='outline'
                 onClick={() => fileInputRef.current?.click()}
                 disabled={isRestoring}
               >
-                <Upload className="mr-2 h-4 w-4" />
+                <Upload className='mr-2 h-4 w-4' />
                 Restore Backup
               </Button>
               <input
                 ref={fileInputRef}
-                type="file"
-                accept=".json"
-                className="hidden"
+                type='file'
+                accept='.json'
+                className='hidden'
                 onChange={handleFileSelect}
               />
             </div>
 
-            <div className="space-y-4">
-              <h3 className="text-lg font-medium">Backup History</h3>
+            <div className='space-y-4'>
+              <h3 className='text-lg font-medium'>Backup History</h3>
               {backups.length === 0 ? (
-                <p className="text-muted-foreground">No backups found</p>
+                <p className='text-muted-foreground'>No backups found</p>
               ) : (
-                <div className="space-y-4">
+                <div className='space-y-4'>
                   {backups.map((backup: Backup) => (
                     <Card key={backup.id}>
-                      <CardContent className="flex items-center justify-between p-4">
+                      <CardContent className='flex items-center justify-between p-4'>
                         <div>
-                          <p className="font-medium">{backup.name}</p>
-                          <p className="text-sm text-muted-foreground">
+                          <p className='font-medium'>{backup.name}</p>
+                          <p className='text-sm text-muted-foreground'>
                             Created on {new Date(backup.createdAt).toLocaleString()}
                           </p>
                         </div>
-                        <div className="flex gap-2">
+                        <div className='flex gap-2'>
                           <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => downloadBackup(backup)}
+                            variant='outline'
+                            size='sm'
+                            onClick={() => handleDownloadBackup(backup)}
                           >
-                            <Download className="h-4 w-4" />
+                            <Download className='h-4 w-4' />
                           </Button>
                           <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => restoreBackup(backup)}
+                            variant='outline'
+                            size='sm'
+                            onClick={() => handleRestoreBackup(backup)}
                           >
-                            <RotateCcw className="h-4 w-4" />
+                            <RotateCcw className='h-4 w-4' />
                           </Button>
                           <Button
-                            variant="destructive"
-                            size="sm"
-                            onClick={() => deleteBackup(backup.id)}
+                            variant='destructive'
+                            size='sm'
+                            onClick={() => handleDeleteBackup(backup.id)}
                           >
-                            <Trash2 className="h-4 w-4" />
+                            <Trash2 className='h-4 w-4' />
                           </Button>
                         </div>
                       </CardContent>
@@ -146,4 +210,3 @@ export default function BackupsPage() {
     </ErrorBoundary>
   )
 }
-
