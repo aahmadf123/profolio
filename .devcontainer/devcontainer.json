@@ -1,5 +1,5 @@
 {
   "tasks": {
-    "build": "nvm install && nvm use && pnpm install && pnpm build"
+    "build": "pnpm install && pnpm run build"
   }
 }
