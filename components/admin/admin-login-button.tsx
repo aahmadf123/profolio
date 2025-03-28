@@ -4,18 +4,16 @@ import { useState, useEffect } from "react"
 import { Settings, Edit } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { useAuthContext } from "@/components/auth-provider"
 
 export function AdminLoginButton() {
   const router = useRouter()
   const [isHovered, setIsHovered] = useState(false)
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const { isAuthenticated } = useAuthContext()
   const [isMounted, setIsMounted] = useState(false)
 
   useEffect(() => {
     setIsMounted(true)
-    // Check localStorage directly instead of using context
-    const storedAuth = localStorage.getItem("isAuthenticated")
-    setIsAuthenticated(storedAuth === "true")
   }, [])
 
   // Don't render anything during SSR to avoid hydration issues
@@ -73,4 +71,3 @@ export function AdminLoginButton() {
     </TooltipProvider>
   )
 }
-

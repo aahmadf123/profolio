@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { Download, FileText, Loader2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
+import { supabase } from "@/lib/supabase-client"
 
 export function ResumeViewer() {
   const [resumeUrl, setResumeUrl] = useState<string | null>(null)
@@ -11,23 +12,20 @@ export function ResumeViewer() {
   const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    // Fetch the resume URL from an API or database
     const fetchResumeUrl = async () => {
       try {
         setIsLoading(true)
 
-        // In a real app, this would be an API call
-        // For now, we'll check localStorage first, then use a fallback
-        const storedResumeUrl = localStorage.getItem("resumeUrl")
+        const { data, error } = await supabase
+          .storage
+          .from('resumes')
+          .getPublicUrl('resume.pdf')
 
-        if (storedResumeUrl) {
-          setResumeUrl(storedResumeUrl)
-        } else {
-          // Use a default PDF if none is stored
-          // This is a placeholder URL - replace with an actual PDF URL
-          setResumeUrl("/sample-resume.pdf")
+        if (error) {
+          throw error
         }
 
+        setResumeUrl(data.publicUrl)
         setError(null)
       } catch (err) {
         console.error("Error fetching resume:", err)
@@ -38,7 +36,7 @@ export function ResumeViewer() {
     }
 
     fetchResumeUrl()
-  }, []) // Empty dependency array ensures this only runs once
+  }, [])
 
   if (isLoading) {
     return (
@@ -103,4 +101,3 @@ export function ResumeViewer() {
     </div>
   )
 }
-

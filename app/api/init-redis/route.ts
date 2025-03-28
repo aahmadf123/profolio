@@ -5,10 +5,10 @@ import { testRedisConnection } from "@/lib/redis-client"
 export async function GET(request: NextRequest) {
   try {
     // Check if Redis is connected
-    const isConnected = await testRedisConnection()
+    const connectionTest = await testRedisConnection()
 
-    if (!isConnected) {
-      return NextResponse.json({ success: false, error: "Failed to connect to Redis" }, { status: 500 })
+    if (!connectionTest.success) {
+      return NextResponse.json({ success: false, error: connectionTest.message }, { status: 500 })
     }
 
     // Initialize the database with sample data
@@ -24,4 +24,3 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ success: false, error: "Internal server error" }, { status: 500 })
   }
 }
-

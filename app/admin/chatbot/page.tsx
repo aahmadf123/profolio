@@ -145,33 +145,67 @@ function ChatbotContent() {
   }
 
   // Handle saving settings
-  const saveSettings = () => {
+  const saveSettings = async () => {
     setIsSaving(true)
 
-    // Simulate API call
-    setTimeout(() => {
-      setIsSaving(false)
+    try {
+      const response = await fetch("/api/chatbot/settings", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(settings),
+      })
+
+      if (!response.ok) {
+        throw new Error("Failed to save settings")
+      }
 
       toast({
         title: "Settings Saved",
         description: "Your chatbot settings have been updated successfully.",
       })
-    }, 1500)
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      })
+    } finally {
+      setIsSaving(false)
+    }
   }
 
   // Handle training the model
-  const trainModel = () => {
+  const trainModel = async () => {
     setIsTraining(true)
 
-    // Simulate API call
-    setTimeout(() => {
-      setIsTraining(false)
+    try {
+      const response = await fetch("/api/chatbot/train", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ trainingData }),
+      })
+
+      if (!response.ok) {
+        throw new Error("Failed to train model")
+      }
 
       toast({
         title: "Training Complete",
         description: "Your chatbot has been trained with the latest data.",
       })
-    }, 3000)
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      })
+    } finally {
+      setIsTraining(false)
+    }
   }
 
   useEffect(() => {
@@ -594,4 +628,3 @@ export default function ChatbotPage() {
     </Suspense>
   )
 }
-
