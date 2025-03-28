@@ -1,0 +1,298 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 262 83% 58%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 160 84% 39%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 262 83% 58%;
+    --radius: 0.5rem;
+
+    /* Gradient variables */
+    --gradient-start: rgba(124, 58, 237, 0.05);
+    --gradient-end: rgba(16, 185, 129, 0.05);
+  }
+
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 262 83% 58%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 160 84% 39%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 262 83% 58%;
+
+    /* Gradient variables for dark mode */
+    --gradient-start: rgba(59, 178, 241, 0.1);
+    --gradient-end: rgba(0, 173, 181, 0.1);
+
+    /* New accent colors */
+    --quantum-cyan: 198 87% 65%;
+    --tech-teal: 182 100% 36%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  /* Smooth theme transitions */
+  :root {
+    transition: color 350ms ease, background-color 350ms ease, border-color 350ms ease, text-decoration-color 350ms ease,
+      fill 350ms ease, stroke 350ms ease;
+  }
+}
+
+/* Custom scrollbar for dark mode */
+.dark ::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: hsl(var(--muted));
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted-foreground) / 0.5);
+  border-radius: 5px;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground) / 0.8);
+}
+
+/* Particle background adjustments for dark mode */
+.dark .particle-canvas {
+  opacity: 0.5;
+}
+
+/* Card styling for dark mode */
+.dark .card-enhanced {
+  background-image: linear-gradient(to bottom right, var(--gradient-start), var(--gradient-end));
+  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.5);
+  transition: all 0.3s ease;
+}
+
+.dark .card-enhanced:hover {
+  box-shadow: 0 8px 20px 0 rgba(0, 0, 0, 0.6);
+  transform: translateY(-5px);
+}
+
+/* Interactive link styling for dark mode */
+.dark .interactive-link {
+  color: #3bb2f1;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.dark .interactive-link:hover {
+  text-decoration: underline;
+  color: #00adb5;
+}
+
+/* Proficiency bar styling for dark mode */
+.dark .proficiency-bar {
+  background: linear-gradient(to right, #3bb2f1, #00adb5);
+  box-shadow: 0 0 8px rgba(59, 178, 241, 0.5);
+}
+
+/* Custom card styling for dark mode */
+.dark .card-gradient {
+  background: linear-gradient(180deg, hsl(var(--background)) 0%, hsl(var(--background) / 0.8) 100%);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.dark .card-gradient:hover {
+  box-shadow: 0 8px 20px rgba(59, 178, 241, 0.2);
+}
+
+/* Custom link styling for dark mode */
+.dark .interactive-link {
+  color: hsl(var(--quantum-cyan));
+  transition: all 0.2s ease;
+}
+
+.dark .interactive-link:hover {
+  text-decoration: underline;
+  color: hsl(var(--tech-teal));
+}
+
+/* Enhanced animations */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 5px 0 rgba(124, 58, 237, 0.5);
+  }
+  50% {
+    box-shadow: 0 0 20px 5px rgba(124, 58, 237, 0.5);
+  }
+}
+
+.dark .animate-pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+/* Page transitions */
+.page-transition-enter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.page-transition-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 300ms, transform 300ms;
+}
+
+.page-transition-exit {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.page-transition-exit-active {
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: opacity 300ms, transform 300ms;
+}
+
+/* Skill level badges */
+.skill-level-beginner {
+  @apply bg-blue-500/10 text-blue-500 border-blue-500/20;
+}
+
+.skill-level-intermediate {
+  @apply bg-green-500/10 text-green-500 border-green-500/20;
+}
+
+.skill-level-advanced {
+  @apply bg-purple-500/10 text-purple-500 border-purple-500/20;
+}
+
+.skill-level-expert {
+  @apply bg-amber-500/10 text-amber-500 border-amber-500/20;
+}
+
+/* Custom cursor */
+.custom-cursor {
+  @apply hidden md:block;
+  position: fixed;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: difference;
+  transition: transform 0.2s ease;
+}
+
+.cursor-dot {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 5px;
+  height: 5px;
+  background-color: hsl(var(--primary));
+  border-radius: 50%;
+}
+
+.cursor-outline {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 20px;
+  border: 1px solid hsl(var(--primary));
+  border-radius: 50%;
+  opacity: 0.5;
+}
+
+.cursor-trail {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background-color: hsl(var(--primary) / 0.3);
+  pointer-events: none;
+}
+
+/* Pulse animation for profile picture */
+@keyframes pulse-border {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(124, 58, 237, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(124, 58, 237, 0);
+  }
+}
+
+.pulse-border {
+  animation: pulse-border 2s infinite;
+}
+
+/* Fade in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
