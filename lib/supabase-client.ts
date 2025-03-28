@@ -98,4 +98,3 @@ export const STORAGE_BUCKETS = {
   AVATARS: "avatars",
   RESUMES: "resumes",
 }
-
